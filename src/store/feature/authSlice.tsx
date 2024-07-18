@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IRegister } from "../../components/models/IRegister";
 import { ILogin } from "../../components/models/ILogin";
 import { IResponse } from "../../components/models/IResponse";
+import swal from 'sweetalert';
 const initialAuthState={
     token: '',
     user: [],
@@ -68,15 +69,18 @@ const authSlice = createSlice({
         build.addCase(fetchLogin.pending,(state)=>{
             state.isLoadingLogin = true;
         })
-        build.addCase(fetchLogin.fulfilled,(state,action)=>{            
+        build.addCase(fetchLogin.fulfilled,(state,action: PayloadAction<IResponse>)=>{            
             state.isLoadingLogin = false;
             if(action.payload.code === 200){
                 state.token = action.payload.data;
-                
-            }else if(action.payload.code === 400)
-                alert(action.payload.message)
+                state.isAuth = true;
+            }else
+                swal('Hata!',action.payload.message,'error');
             
-        })
+        });
+        build.addCase(fetchLogin.rejected,(state,action)=>{
+            console.log(action.payload);
+        });
     }
 });
 

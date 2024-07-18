@@ -1,9 +1,4 @@
-import React from 'react'
-
-function index() {
-  return (
-    <div>index</div>
-  )
+import authSlice from "./authSlice"
+export{
+  authSlice
 }
-
-export default index
